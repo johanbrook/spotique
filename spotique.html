@@ -1,0 +1,56 @@
+<head>
+  <title>Spotique</title>
+</head>
+
+<body>
+	{{> add}}
+  {{> queue}}
+
+  <!-- By Johan Brook, 2013 -->
+</body>
+
+
+<template name="add">
+	<input type="text" size="40" id="suggestion" placeholder="Spotify URI or plain text" autofocus />
+	<input type="button" id="submit" value="Suggest" disabled />
+	<p style="text-align:right">
+		<small><a href="#" id="clear-queue">Clear queue</a></small>
+	</p>
+</template>
+
+<template name="queue">
+	{{#if error}}
+	<p class="negative">{{error}}</p>
+	{{/if}}
+
+	{{#if suggestions}}
+	<ul class="suggestions">
+		{{#each suggestions}}
+			{{> suggestion}}
+		{{/each}}
+	</ul>
+	
+	{{else}}
+
+	<p>No suggestions yet</p>
+
+	{{/if}}
+</template>
+
+<template name="suggestion">
+	<li id="{{_id._str}}">
+		{{#if isSpotifyURI value }}
+		{{> song}}
+		{{else}}
+		<span class="song-title">{{value}}</span>
+		{{/if}}
+
+		<footer>
+			<button class="mark-played">I've played this song</button>
+		</footer>
+	</li>
+</template>
+
+<template name="song">
+	<iframe src="https://embed.spotify.com/?uri={{value}}" width="400" height="80" frameborder="0" allowtransparency="true"></iframe>
+</template>
