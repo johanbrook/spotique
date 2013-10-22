@@ -1,10 +1,10 @@
-# # Spotique
+# Spotique
 
-# Root scope
+Root scope
 
 	root = global ? window
 
-# ## Core collection
+## Core collection
 
 	root.Suggestions = new Meteor.Collection "suggestions", idGeneration: "MONGO"
 
@@ -20,15 +20,14 @@
 				created_at: new Date().getTime()
 				played: false
 
-# Check if `text` is a valid Spotify URI on
-# the form: spotify:track:{22 chars, A-z, 0-9}
+Check if `text` is a valid Spotify URI on
+the form: spotify:track:{22 chars, A-z, 0-9}
 
 	Meteor.isSpotifyURI = (text) ->
 		result = text.match(/spotify:track:([A-Za-z0-9]{22})/)
 		result[1] if result?
 
-# Transform `text` to "song title" form:
-# 	this is a song -> This Is A Song
+Transform `text` to "song title" form: this is a song -> This Is A Song
 
 	Meteor.songify = (text) ->
 		text.split(" ").map((word) -> word[0].toUpperCase() + word.substr(1).toLowerCase()).join(" ")
@@ -36,7 +35,7 @@
 
 	if Meteor.isClient
 
-# ## Templates
+## Templates
 
 		Template.queue.suggestions = ->
 			Suggestions.find({}, sort: {created_at: -1}).fetch()
@@ -47,7 +46,7 @@
 		Template.suggestion.isSpotifyURI = (text) ->
 			Meteor.isSpotifyURI(text)?
 
-# ## Events
+## Events
 
 		Template.suggestion.events
 			"click .mark-played": (evt, template) ->
@@ -60,26 +59,25 @@
 
 		Template.add.events
 
-# Clear queue on click
+Clear queue on click
 
 			"click #clear-queue": (evt, template) ->
 				evt.preventDefault()
 				Meteor.call "clearQueue"
 
-# Enable/disable submit button depending on if
-# there is text in the input field
+Enable/disable submit button depending on if there is text in the input field
 
 			"input #suggestion": (evt, template) ->
 				$input = $(template.firstNode)
 				$input.nextAll("input").attr("disabled", not $input.val().length > 0)
 
-# Submit when hitting 'enter'
+Submit when hitting 'enter'
 
 			"keydown": (evt, template) ->
 				switch evt.which
 					when 13 then $(template.find("#submit")).trigger "click"
 
-# On submit, add the suggestion
+On submit, add the suggestion
 
 			"click #submit": (evt, template) ->
 				value = $("#suggestion").val()
