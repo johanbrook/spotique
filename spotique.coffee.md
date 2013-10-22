@@ -1,5 +1,9 @@
 # Spotique
 
+A minimal Meteor app for adding songs to a queue, with support for [Spotify's Play Button](https://developer.spotify.com/technologies/widgets/spotify-play-button/) when adding valid Spotify song URIs. 
+
+---
+
 Set the root scope.
 
 	root = global ? window
